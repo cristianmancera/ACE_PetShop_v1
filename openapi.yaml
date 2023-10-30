@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: API de Tienda de Mascotas
+  version: 1.0.0
+paths:
+  /pet:
+    post:
+      summary: Agregar una nueva mascota
+      requestBody:
+        description: Datos de la mascota a agregar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '200':
+          description: Mascota agregada exitosamente
+  /pet/findByStatus:
+    get:
+      summary: Buscar mascotas por estado
+      parameters:
+        - name: status
+          in: query
+          description: Estado de la mascota a buscar
+          required: true
+          schema:
+            type: string
+            enum:
+              - available
+              - pending
+              - sold
+      responses:
+        '200':
+          description: Mascotas encontradas exitosamente
+  /pet/findByTags:
+    get:
+      summary: Buscar mascotas por etiquetas
+      parameters:
+        - name: tags
+          in: query
+          description: Etiquetas de la mascota a buscar
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Mascotas encontradas exitosamente
+  /pet/{petId}:
+    get:
+      summary: Obtener una mascota por ID
+      parameters:
+        - name: petId
+          in: path
+          description: ID de la mascota a obtener
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Mascota encontrada exitosamente
+    put:
+      summary: Actualizar una mascota existente
+      parameters:
+        - name: petId
+          in: path
+          description: ID de la mascota a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Nuevos datos de la mascota
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '200':
+          description: Mascota actualizada exitosamente
+    delete:
+      summary: Eliminar una mascota por ID
+      parameters:
+        - name: petId
+          in: path
+          description: ID de la mascota a eliminar
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Mascota eliminada exitosamente
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - available
+            - pending
+            - sold
+        tags:
+          type: array
+          items:
+            type: string
